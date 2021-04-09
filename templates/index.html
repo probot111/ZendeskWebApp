@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+{% block title %} Home {% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+            <div class="jumbotron p-3">
+                <h2>Online Agents </h2>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-success alert-dismissable" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                {{message}}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+                <table class="table table-hover table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Total Talk Time</th>
+                        <th>Calls Accepted</th>
+                        <th>Calls Missed</th>
+                        <th>Calls Declined</th>
+                    </tr>
+                   {% for row in proxies %}
+                    {% if row[16] == "online" or row[16] == "away" %}
+                      <tr>
+                        <td>{{row[0]}}</td>
+                        <td>{{row[16]}}</td>
+                        <td>{{row[12]}}</td>
+                        <td>{{row[6]}}</td>
+                        <td>{{row[8]}}</td>
+                        <td>{{row[7]}}</td>
+                          <td style=display:none>{{row[1]}}</td>
+
+                        <td>
+                            <a href="/offline/{{row[1]}}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure you want to make {{row[0]}} offline ?')">Make Offline</a>
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+                    {% endfor %}
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
